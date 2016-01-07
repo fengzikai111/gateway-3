@@ -1,2 +1,1 @@
-# gateway
-smarthome-gateway
+#SmartHomeGateWay
