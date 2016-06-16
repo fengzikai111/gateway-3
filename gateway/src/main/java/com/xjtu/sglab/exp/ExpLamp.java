@@ -12,6 +12,7 @@ public class ExpLamp {
 
 	public static void main(String[] args) {
 		// Appliance Lamp
+		System.out.println("5" + 2);
 		Timer tiemr7 = new Timer();
 		tiemr7.schedule(new TimerTask() {
 			@Override

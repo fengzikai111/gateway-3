@@ -74,7 +74,7 @@ public class ArduinoSensorDAO {
 			result=new String(realData);
 		} catch (Exception e) {
 			// TODO: handle exception
-			System.out.println("fail" + "gather");
+			System.out.println("fail" + "gather" + e.getMessage());
 			e.printStackTrace();
 		} finally {
 			if (clientSocket != null)

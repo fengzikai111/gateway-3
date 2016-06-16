@@ -33,6 +33,7 @@ public class ACctrl {
 		} catch (Exception e) {
 			// TODO: handle exception
 			System.out.println("Fail" + "SetACsettings");
+			System.out.println(e.getMessage());
 		}
 		finally
 		{

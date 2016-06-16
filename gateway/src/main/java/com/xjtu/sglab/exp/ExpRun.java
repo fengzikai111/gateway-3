@@ -14,6 +14,7 @@ import javax.ws.rs.core.Response;
 import org.glassfish.jersey.client.ClientConfig;
 
 import com.google.gson.Gson;
+import com.sun.tools.corba.se.idl.constExpr.And;
 import com.sun.tools.internal.xjc.reader.internalizer.DOMForest.Handler;
 import com.xjtu.sglab.gateway.comm.ACctrl;
 import com.xjtu.sglab.gateway.comm.ACctrl.AC_MODE;
@@ -47,7 +48,7 @@ public class ExpRun {
 	
 	public static void main(String[] args) {
 		// Meter
-		Timer timer = new Timer();
+		/*Timer timer = new Timer();
 		timer.schedule(new TimerTask() {
 			@Override
 			public void run() {
@@ -66,9 +67,9 @@ public class ExpRun {
 							Constants.Meter.METER_ID_104);
 				}
 			}
-		}, 1000, 60000);
+		}, 1000, 600000);*/
 
-		Timer timer2 = new Timer();
+		/*Timer timer2 = new Timer();
 		timer2.schedule(new TimerTask() {
 			@Override
 			public void run() {
@@ -87,7 +88,7 @@ public class ExpRun {
 							Constants.Meter.METER_ID_103);
 				}
 			}
-		}, 1000, 60000);
+		}, 1000, 600000);*/
 
 		Timer timer3 = new Timer();
 		timer3.schedule(new TimerTask() {
@@ -108,13 +109,13 @@ public class ExpRun {
 							Constants.Meter.METER_ID_102);
 				}
 			}
-		}, 1000, 60000);
+		}, 1000, 600000);
 
 		
 		
 		// Sensor
 		Timer tiemr4 = new Timer();
-		/*tiemr4.schedule(new TimerTask() {
+		tiemr4.schedule(new TimerTask() {
 			String ip=Constants.Sensor.IP;
 			
 			public String getIp() {
@@ -152,7 +153,7 @@ public class ExpRun {
 					setIp(ArduinoSensorDAO.sniffModules("192.168.1.255").get(0).getHostAddress());
 				}
 			}
-		}, 1000, 60000);*/
+		}, 1000, 600000);
 
 		// Appliance AC
 		Timer tiemr5 = new Timer();
@@ -168,7 +169,7 @@ public class ExpRun {
 						long recordTime = airConditionStatus[0]
 								.getAirConditionStatusRecordTime().getTime();
 						System.out.println(recordTime+"ac!!!!!!!!!!");
-						if (Math.abs(recordTime - System.currentTimeMillis()) < 10000) {
+						if (Math.abs(recordTime - System.currentTimeMillis()) < 120000 && airConditionStatus[0].getIsAlreadyControlled() == false) {
 							ACctrl.AC_MODE acMode;
 							if (airConditionStatus[0].getAirConditionMode() == Constants.AirConditioner.SNOW) {
 								acMode = ACctrl.AC_MODE.COLD;
@@ -185,13 +186,14 @@ public class ExpRun {
 									(int) ((float) airConditionStatus[0]
 											.getAirConditionTemperature()),
 									acMode);
+							ApplianceComm.getInstance().saveAirConditionInfo(1, 1, (float)airConditionStatus[0].getAirConditionTemperature());
 						}
 					}
 				} catch (Exception e) {
 					
 				}
 			}
-		}, 1000, 5000);
+		}, 1000, 1000);
 
 		// Appliance Switch
 		Timer tiemr6 = new Timer();
@@ -226,7 +228,7 @@ public class ExpRun {
 					
 				}
 			}
-		}, 1000, 5000);
+		}, 1000, 1000);
 
 
 		final InetAddress inetAddress = LightCtrl
@@ -254,12 +256,13 @@ public class ExpRun {
 							//LightCtrl.confirm(inetAddress);
 							System.out.println(lampStatusNow.getLamp()
 									.getLampId()+"lamp+++++++");
+							LightCtrl.confirm(inetAddress);
 							if (lampStatusNow.getLampStatus() == 0) {
-								for (int j = 0; j < 3; j++)
+								for (int j = 0; j < 4; j++)
 									LightCtrl.control(lampStatusNow.getLamp()
 											.getLampId(), false, inetAddress);
 							} else
-								for (int j = 0; j < 3; j++)
+								for (int j = 0; j < 4; j++)
 									LightCtrl.control(lampStatusNow.getLamp()
 											.getLampId(), true, inetAddress);
 							ApplianceComm.getInstance().saveLampInfo(lampStatusNow.getLamp().getLampId(),lampStatusNow.getLampStatus());
@@ -269,7 +272,7 @@ public class ExpRun {
 					
 				}
 			}
-		}, 1000, 5000);
+		}, 1000, 1000);
 
 		// Appliance Curtian
 		Timer tiemr8 = new Timer();
@@ -299,7 +302,7 @@ public class ExpRun {
 					
 				}
 			}
-		}, 1000, 5000);
+		}, 1000, 1000);
 		
 		
 		
@@ -363,12 +366,15 @@ public class ExpRun {
 						@Override
 						public void run(){
 							if (acType == 4){//上班
+								LightCtrl.confirm(inetAddress);
 								for (int i = 1; i <= 3; i++){
 									for (int j = 0; j < 4; j++){
-										LightCtrl.control(i, true, inetAddress);}
+										LightCtrl.control(i, true, inetAddress);
+									}
 								}
 							}
 							if (acType == 5){//下班
+								LightCtrl.confirm(inetAddress);
 								for (int i = 1; i <= 3; i++){
 									for (int j = 0; j < 4; j++){
 										LightCtrl.control(i, false, inetAddress);}

@@ -49,6 +49,8 @@ public class ApplianceComm {
 				.target("http://"+Constants.Server.IP+":8080/smarthome/appliance/lamp/list").queryParam("ids",ints);
 		Builder request = webTarget.request();
 		Response response = request.get();
+		//String str = response.readEntity(String.class);
+		//System.out.println(str);
 		LampStatus[] lampStatus = response.readEntity(LampStatus[].class);
 		return lampStatus;
 	}

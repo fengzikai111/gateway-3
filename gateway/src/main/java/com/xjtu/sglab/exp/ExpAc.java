@@ -25,7 +25,7 @@ public class ExpAc {
 					if (airConditionStatus.length == 1) {
 						long recordTime = airConditionStatus[0]
 								.getAirConditionStatusRecordTime().getTime();
-	//								System.out.println(recordTime+"ac!!!!!!!!!!");
+									System.out.println(recordTime+"ac!!!!!!!!!!");
 									if (Math.abs(recordTime - System.currentTimeMillis()) < 3000000
 											&&airConditionStatus[0].getIsAlreadyControlled()==false) {
 										ACctrl.AC_MODE acMode;

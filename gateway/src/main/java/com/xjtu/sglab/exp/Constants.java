@@ -46,7 +46,7 @@ public final class Constants {
 	
 	public final static class Sensor{
 		public static final int ID=1;
-		public static final String IP="192.168.1.46";
+		public static final String IP="192.168.1.3";
 	}
 	
 	 
